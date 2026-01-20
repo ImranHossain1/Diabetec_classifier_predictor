@@ -3,8 +3,7 @@ import pandas as pd
 import pickle
 import numpy as np
 
-# 🔥 IMPORTANT: import custom transformers BEFORE loading pickle
-from feature_engineering import InvalidZeroHandler, DiabetesFeatureEngineer
+from feature_engineering import InvalidZeroHandler, DiabetesFeatureEngineer, IQRCapper, SafeLogTransformer
 
 # Load trained pipeline
 with open("stacking_classifier.pkl", "rb") as f:
@@ -37,14 +36,14 @@ def predict_diabetes(
 
 # Gradio inputs
 inputs = [
-    gr.Number(label="Pregnancies", value=0),
-    gr.Number(label="Glucose", value=120),
-    gr.Number(label="BloodPressure", value=70),
-    gr.Number(label="SkinThickness", value=20),
-    gr.Number(label="Insulin", value=79),
-    gr.Number(label="BMI", value=25.0),
-    gr.Number(label="DiabetesPedigreeFunction", value=0.5),
-    gr.Number(label="Age", value=33)
+    gr.Slider(label="Number of Pregnancies", minimum=0, maximum=20, step=1, value=0),
+    gr.Number(label="Plasma Glucose Level (mg/dL)", value=120),
+    gr.Number(label="Diastolic Blood Pressure (mm Hg)", value=70),
+    gr.Number(label="Triceps Skinfold Thickness (mm)", value=20),
+    gr.Number(label="2-Hour Serum Insulin (µU/mL)", value=80),
+    gr.Number(label="Body Mass Index (BMI, kg/m²)", value=25.0),
+    gr.Number(label="Diabetes Pedigree Function (genetic risk)", value=0.5),
+    gr.Number(label="Age (years)", value=33)
 ]
 
 # Interface
